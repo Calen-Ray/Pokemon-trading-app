@@ -1,0 +1,62 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'main.css' %}">
+
+<div id="app">
+    <div>
+      
+        <div class='poke'>
+            <div v-for='poke in bigList'>
+                <h3><a :href="[[poke.url_detail]]">[[poke.name]] </a></h3>
+                <p>#[[poke.num]] </p>
+                <img :src="[[poke.basic_img_url]]" alt="">
+                <ul>
+                    <li v-for='type in poke.types_short' :class='[[type.type]]'>[[type.type]]</li>
+                </ul>
+            </div>
+        </div>
+<!-- { "name": "bulbasaur", "num": "1", "basic_img_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/1.png", "url_detail": "https://pokeapi.co/api/v2/pokemon/1/", "types_short": [ { "type": "grass" }, { "type": "poison" } ], "gens_short": [ { "name": "generation 1" }, { "name": "generation 2" }, { "name": "generation 3" }, { "name": "generation 4" }, { "name": "generation 5" }, { "name": "generation 6" }, { "name": "generation 7" }, { "name": "generation 8" } ], "games_short": [ { "name": "red-blue" }, { "name": "yellow" }, { "name": "crystal" }, { "name": "gold" }, { "name": "silver" }, { "name": "emerald" }, { "name": "firered-leafgreen" }, { "name": "ruby-sapphire" }, { "name": "diamond-pearl" }, { "name": "heartgold-soulsilver" }, { "name": "platinum" }, { "name": "black-white" }, { "name": "omegaruby-alphasapphire" }, { "name": "x-y" }, { "name": "icons" }, { "name": "ultra-sun-ultra-moon" } ] } -->
+
+    </div>
+
+
+
+
+    <div class="details">
+        [[detail]]
+    </div>
+
+</div>
+
+
+
+<script src="https://unpkg.com/vue"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<!-- <link rel="stylesheet" href="{% static 'app.js'%}"> -->
+
+
+<script>
+let app = new Vue({
+    el: '#app',
+    delimiters: ['[[', ']]'], // This is new
+    data: {
+    bigList: '',
+    detail: '',
+    },
+    methods: {
+
+    loadPokemon: function () {
+        axios({
+            method: 'get',
+            url: 'http://127.0.0.1:8000/api/v1/pokemon'
+        }).then( response => {
+            this.bigList = response.data
+
+        })
+    },
+
+    },
+    created: function () {
+        this.loadPokemon()
+    }
+});
+</script>
