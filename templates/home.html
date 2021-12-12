@@ -1,0 +1,55 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'main.css' %}">
+
+<div id="app">
+    <div>
+        <div class='mon-list'>
+            <h1>[[bigList.results.length]]</h1>
+            <div v-for='poke in bigList.results' class='mon-singular'>
+                <div>[[poke]]</div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div class="details">
+        [[detail]]
+    </div>
+
+</div>
+
+
+
+<script src="https://unpkg.com/vue"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+
+<script>
+let app = new Vue({
+    el: '#app',
+    delimiters: ['[[', ']]'], // This is new
+    data: {
+    bigList: '',
+    detail: '',
+    },
+    methods: {
+
+    loadPokemon: function () {
+        axios({
+            method: 'get',
+            url: 'https://pokeapi.co/api/v2/pokemon/?offset=00&limit=2000'
+        }).then( response => {
+            this.bigList = response.data
+            this.detail = ''
+
+        })
+    },
+
+    },
+    created: function () {
+        this.loadPokemon()
+    }
+});
+</script>
